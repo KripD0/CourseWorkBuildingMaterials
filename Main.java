@@ -29,9 +29,11 @@ public class Main {
                 case 3 -> Operations.Delete();
                 case 4 -> Operations.Wiwod();
                 case 5 -> Operations.ConvertObjecttoXML();
+                case 6 -> Operations.ConvertXmltoObject();
                 case 7 -> flag = false;
                 default -> System.out.println("Введено неверное значение:");
             }
         }
+
     }
 }

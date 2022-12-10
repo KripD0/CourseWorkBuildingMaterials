@@ -1,46 +1,85 @@
 package org.example;
 
-import java.sql.SQLOutput;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static javax.xml.bind.JAXBContext.newInstance;
+
 public class Operations {
-    static ArrayList<Pesok> Pesok = new ArrayList<Pesok>();
-    static ArrayList<Cement> Cement = new ArrayList<Cement>();
+    static ArrayList<pesok> Pesok = new ArrayList<pesok>();
+    static ArrayList<cement> Cement = new ArrayList<cement>();
     static ArrayList<brick> Brick = new ArrayList<brick>();
     static ArrayList<glass> Glass = new ArrayList<glass>();
-    static ArrayList massiv = new ArrayList();
 
     static double weight, density, fragility;
     static int radioactive, drying_time, value, streight, IdDelete, IDChange;
     static boolean flag1 = true, flag2 = true;
     static Scanner vvod = new Scanner(System.in);
+    static String filename = "myxml.xml";
 
     public static void ConvertObjecttoXML(){
+        ForXML perevodtoxml = new ForXML();
         if(!Pesok.isEmpty()){
             for (int i=0; i< Pesok.size(); i++){
-                massiv.add(Pesok.get(i));
+                perevodtoxml.spisok.add(Pesok.get(i));
             }
         }
         if(!Cement.isEmpty()){
             for (int i=0; i< Cement.size(); i++){
-                massiv.add(Cement.get(i));
+                perevodtoxml.spisok.add(Cement.get(i));
             }
         }
         if(!Brick.isEmpty()){
             for (int i=0; i< Brick.size(); i++){
-                massiv.add(Brick.get(i));
+                perevodtoxml.spisok.add(Brick.get(i));
             }
         }
         if(!Glass.isEmpty()){
             for (int i=0; i< Glass.size(); i++){
-                Glass.add(Glass.get(i));
+                perevodtoxml.spisok.add(Glass.get(i));
             }
         }
-        for(int i = 0; i<massiv.size(); i++){
-            System.out.println(massiv.get(i));
+//        for(int i = 0; i<perevodtoxml.spisok.size(); i++){  //вывод всего на экран
+//            System.out.println(perevodtoxml.spisok.get(i));
+//        }
+        try { //Данный try catch добавляет все в XML файл.
+            JAXBContext context = newInstance(General.class, ForXML.class, pesok.class, cement.class, brick.class, glass.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(perevodtoxml, new File(filename));
+            marshaller.marshal(perevodtoxml, System.out);
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
-
+    }
+    public static void ConvertXmltoObject() {
+        ForXML vseobjects;
+        try {//Данный try catch считывает все из XML файла.
+            JAXBContext dada = JAXBContext.newInstance(General.class, ForXML.class, pesok.class, cement.class, brick.class, glass.class);
+            Unmarshaller un = dada.createUnmarshaller();
+            vseobjects = (ForXML) un.unmarshal(new File(filename));
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+        for (Object obj : vseobjects.spisok) {
+            if (obj instanceof pesok) {
+                Pesok.add((pesok) obj);
+            }
+            if (obj instanceof cement) {
+                Cement.add((cement) obj);
+            }
+            if (obj instanceof brick) {
+                Brick.add((brick) obj);
+            }
+            if (obj instanceof glass) {
+                Glass.add((glass) obj);
+            }
+        }
     }
 
     public static void Sozdat(){
@@ -57,7 +96,7 @@ public class Operations {
                     weight = vvod.nextDouble();
                     System.out.println("Введите степень радиокактивности (от 1 до 5): ");
                     radioactive = vvod.nextInt();
-                    Pesok.add(new Pesok(weight, radioactive));
+                    Pesok.add(new pesok(weight, radioactive));
                     System.out.println("Объект успешно создан.\n");
                 }
                 case 2 -> {
@@ -67,7 +106,7 @@ public class Operations {
                     drying_time = vvod.nextInt();
                     System.out.println("Введите Плотность (м3): ");
                     density = vvod.nextDouble();
-                    Cement.add(new Cement(drying_time, density, weight));
+                    Cement.add(new cement(drying_time, density, weight));
                     System.out.println("Объект успешно создан.\n");
                 }
                 case 3 -> {
@@ -126,7 +165,7 @@ public class Operations {
                         }
                         boolean iscorrectp = true;
                         if(Index != -1){
-                            Pesok Pesokobj = Pesok.get(Index);
+                            pesok Pesokobj = Pesok.get(Index);
                             while (iscorrectp) {
                                 System.out.println("Выберите параметр который хотите изменить.\n 1.Вес.\n 2.Степень Радиоактивности.\n 3.Вернуться назад.");
                                 switch (vvod.nextInt()) {
@@ -163,7 +202,7 @@ public class Operations {
                         }
                         boolean iscorrectc = true;
                         if(Index != -1){
-                            Cement Cemebtobj = Cement.get(Index);
+                            cement Cemebtobj = Cement.get(Index);
                             while (iscorrectc) {
                                 System.out.println("Выберите параметр который хотите изменить.\n 1.Вес.\n 2.Время засыхания.\n 3.Плотность\n 4.Вернуться назад.");
                                 switch (vvod.nextInt()) {
@@ -332,12 +371,12 @@ public class Operations {
         else {
             System.out.println("\nВ базе имеются:");
             if (!Pesok.isEmpty()) {
-                for (Pesok pesok : Pesok) {
+                for (pesok pesok : Pesok) {
                     System.out.println(pesok + "");
                 }
             }
             if (!Cement.isEmpty()) {
-                for (Cement cement : Cement) {
+                for (cement cement : Cement) {
                     System.out.println(cement + "");
                 }
             }

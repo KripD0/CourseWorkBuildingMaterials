@@ -1,20 +1,23 @@
 package org.example;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+@XmlSeeAlso({pesok.class, cement.class, brick.class, glass.class})
 public abstract class General {
     private String name; //Название
     private int id; //Id вводить не нужно
     private double weight; // Вес
     private int value; // Количество
     public static int k = 100; //Переменная для автоматического ID
-
+    @XmlElement
     public String getName() {return name;}
-
+    @XmlElement
     public int getId() {return id;}
-
+    @XmlElement
     public double getWeight() {return weight;}
-
+    @XmlElement
     public int getValue() {return value;}
-
     public void setName(String name) {this.name = name;}
 
     public void setId(int id) {this.id = id;}
@@ -23,10 +26,10 @@ public abstract class General {
 
     public void setValue(int value) {this.value = value;}
 }
-class Pesok extends General {
+class pesok extends General {
     private int radioactive; //Радиоактивность
 
-    public Pesok(double weight, int radioactive) {
+    public pesok(double weight, int radioactive) {
         this.setName("Песок");
         this.setId(k);
         this.setWeight(weight);
@@ -34,14 +37,14 @@ class Pesok extends General {
         General.k += Math.random()*90 + 10;
     }
 
-    public Pesok(double weight) {
+    public pesok(double weight) {
         this.setName("Песок");
         this.setId(k);
         this.setWeight(weight);
         this.radioactive = 0;
         General.k += Math.random()*90 + 10;
     }
-    public Pesok() {
+    public pesok() {
         this.setName("Песок");
         this.setId(k);
         this.setWeight(0);
@@ -50,7 +53,7 @@ class Pesok extends General {
     }
 
     public void setRadioactive(int radioactive) {this.radioactive = radioactive;}
-
+    @XmlElement
     public int getRadioactive() {return radioactive;}
 
     @Override
@@ -61,11 +64,11 @@ class Pesok extends General {
     }
 
 }
-class Cement extends General{
+class cement extends General{
     private int drying_time; //Время высыхания
     private double density; // Плотность
 
-    public Cement(int drying_time, double density, double weight) {
+    public cement(int drying_time, double density, double weight) {
         this.setName("Цемент");
         this.setId(k);
         this.setWeight(weight);
@@ -73,7 +76,7 @@ class Cement extends General{
         this.density = density;
         General.k += Math.random()*90 + 10;
     }
-    public Cement() {
+    public cement() {
         this.setName("Цемент");
         this.setId(k);
         this.setWeight(0);
@@ -82,15 +85,16 @@ class Cement extends General{
         General.k += Math.random()*90 + 10;
     }
 
+
     @Override
     public String toString(){
         String stroka = "";
         stroka = "Наименование: " + this.getName() + ";ID: " + this.getId() + ";Вес: " + this.getWeight() + "кг;Время высыхания: " + this.getDrying_time() + " Ч;Плотность: " + this.getDensity() + " м3" ;
         return stroka;
     }
-
+    @XmlElement
     public int getDrying_time() {return drying_time;}
-
+    @XmlElement
     public double getDensity() {return density;}
 
     public void setDrying_time(int drying_time) {this.drying_time = drying_time;}
@@ -99,7 +103,7 @@ class Cement extends General{
 }
 class brick extends General{
     private int streight; // Марка прочности
-
+    @XmlElement
     public int getStreight() {return streight;}
 
     public void setStreight(int streight) {this.streight = streight;}
@@ -131,7 +135,7 @@ class brick extends General{
 }
 class glass extends General{
     private double fragility; // Хрупкость
-
+    @XmlElement
     public double getFragility() {return fragility;}
 
     public void setFragility(double fragility) {this.fragility = fragility;}
