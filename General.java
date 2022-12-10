@@ -89,7 +89,7 @@ class cement extends General{
     @Override
     public String toString(){
         String stroka = "";
-        stroka = "Наименование: " + this.getName() + ";ID: " + this.getId() + ";Вес: " + this.getWeight() + "кг;Время высыхания: " + this.getDrying_time() + " Ч;Плотность: " + this.getDensity() + " м3" ;
+        stroka = "Наименование: " + this.getName() + ";ID: " + this.getId() + ";Вес: " + this.getWeight() + "кг;Время высыхания: " + this.getDrying_time() + " Часов;Плотность: " + this.getDensity() + " м3" ;
         return stroka;
     }
     @XmlElement
