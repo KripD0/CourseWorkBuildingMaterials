@@ -9,7 +9,7 @@ public abstract class General {
     private int id; //Id вводить не нужно
     private double weight; // Вес
     private int value; // Количество
-    public static int k = 100; //Переменная для автоматического ID
+    public static int k = 1000; //Переменная для автоматического ID
     @XmlElement
     public String getName() {return name;}
     @XmlElement
@@ -31,25 +31,25 @@ class pesok extends General {
 
     public pesok(double weight, int radioactive) {
         this.setName("Песок");
+        pesok.k += Math.random()*90 + 10;
         this.setId(k);
         this.setWeight(weight);
         this.radioactive = radioactive;
-        General.k += Math.random()*90 + 10;
     }
 
     public pesok(double weight) {
         this.setName("Песок");
+        pesok.k += Math.random()*90 + 10;
         this.setId(k);
         this.setWeight(weight);
         this.radioactive = 0;
-        General.k += Math.random()*90 + 10;
     }
     public pesok() {
         this.setName("Песок");
+        pesok.k += Math.random()*90 + 10;
         this.setId(k);
         this.setWeight(0);
         this.radioactive = 0;
-        General.k += Math.random()*90 + 10;
     }
 
     public void setRadioactive(int radioactive) {this.radioactive = radioactive;}
@@ -65,24 +65,25 @@ class pesok extends General {
 
 }
 class cement extends General{
+    static int k = 3000;
     private int drying_time; //Время высыхания
     private double density; // Плотность
 
     public cement(int drying_time, double density, double weight) {
         this.setName("Цемент");
+        cement.k += Math.random()*90 + 10;
         this.setId(k);
         this.setWeight(weight);
         this.drying_time = drying_time;
         this.density = density;
-        General.k += Math.random()*90 + 10;
     }
     public cement() {
         this.setName("Цемент");
+        cement.k += Math.random()*90 + 10;
         this.setId(k);
         this.setWeight(0);
         this.drying_time = 0;
         this.density = 0;
-        General.k += Math.random()*90 + 10;
     }
 
 
@@ -102,6 +103,7 @@ class cement extends General{
     public void setDensity(double density) {this.density = density;}
 }
 class brick extends General{
+    static int k = 5000;
     private int streight; // Марка прочности
     @XmlElement
     public int getStreight() {return streight;}
@@ -110,20 +112,20 @@ class brick extends General{
 
     public brick() {
         this.setName("Кирпич");
+        brick.k += Math.random()*90 + 10;
         this.setId(k);
         this.setWeight(0);
         this.setStreight(0);
         this.setValue(0);
-        General.k += Math.random()*90 + 10;
     }
 
     public brick(int value, int streight, double weight) {
         this.setName("Кирпич");
+        brick.k += Math.random()*90 + 10;
         this.setId(k);
         this.setWeight(weight);
         this.setStreight(streight);
         this.setValue(value);
-        General.k += Math.random()*90 + 10;
     }
 
     @Override
@@ -134,6 +136,7 @@ class brick extends General{
     }
 }
 class glass extends General{
+    static int k = 8000;
     private double fragility; // Хрупкость
     @XmlElement
     public double getFragility() {return fragility;}
@@ -142,19 +145,19 @@ class glass extends General{
 
     public glass(double fragility, int value, double weight) {
         this.setName("Стекло");
+        glass.k += Math.random()*90 + 10;
         this.setId(k);
         this.setFragility(fragility);
         this.setWeight(weight);
         this.setValue(value);
-        General.k += Math.random()*90 + 10;
     }
     public glass() {
         this.setName("Стекло");
+        glass.k += Math.random()*90 + 10;
         this.setId(k);
         this.setFragility(0);
         this.setWeight(0);
         this.setValue(0);
-        General.k += Math.random()*90 + 10;
     }
 
     @Override

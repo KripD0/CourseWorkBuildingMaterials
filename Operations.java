@@ -32,21 +32,19 @@ public class Operations {
             System.out.println("4.Вывести список объектов: ");
             System.out.println("5.Сохранить состояния объектов в XML файл:");
             System.out.println("6.Считать состояния объектов из XML файла:");
-            System.out.println("7.Завершить программу: ");
+            System.out.println("7.Полностью очистить XML файл.");
+            System.out.println("8.Завершить программу: ");
             switch (inputNumInt()) {
                 case 1 -> {
                     Operations.flag1 = true;
                     Sozdat();
-                    break;
                 }
                 case 2 -> {
                     Operations.flag2 = true;
                     Change();
-                    break;
                 }
                 case 3 -> {
                     Delete();
-                    break;
                 }
                 case 4 -> {
                     boolean flagforwiwod = true;
@@ -73,16 +71,14 @@ public class Operations {
                 }
                 case 5 -> {
                     Operations.ConvertObjecttoXML();
-                    break;
                 }
                 case 6 -> {
                     Operations.ConvertXmltoObject();
-                    break;
                 }
-                case 7 -> flag = false;
+                case 7 -> clearXmlfile();
+                case 8 -> flag = false;
                 default -> {
                     System.out.println("Введено неверное значение:");
-                    break;
                 }
             }
         }
@@ -110,14 +106,19 @@ public class Operations {
                 perevodtoxml.spisok.add(Glass.get(i));
             }
         }
-        try { //Данный try catch добавляет все в XML файл.
-            JAXBContext context = newInstance(General.class, ForXML.class, pesok.class, cement.class, brick.class, glass.class);
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(perevodtoxml, new File(filename));
-            System.out.println("Xml файл успешно создан.");
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        if (perevodtoxml.spisok.isEmpty()){
+            System.out.println("База данных пустая, чтобы сохранить объекты в XML, создайте их.");
+        }
+        else {
+            try { //Данный try catch добавляет все в XML файл.
+                JAXBContext context = newInstance(General.class, ForXML.class, pesok.class, cement.class, brick.class, glass.class);
+                Marshaller marshaller = context.createMarshaller();
+                marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                marshaller.marshal(perevodtoxml, new File(filename));
+                System.out.println("Состояния объектов успешно сохранено в Xml файл.");
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
         }
     }
     public static void ConvertXmltoObject() {//Функция для считывания объектов с XML.
@@ -144,6 +145,35 @@ public class Operations {
             if (obj instanceof glass) {
                 Glass.add((glass) obj);
             }
+        }
+    }
+    public static void clearXmlfile(){ //Функция для очистки XML файла.
+        boolean flagclear = true;
+        String danet = "";
+        ForXML clearXml = new ForXML();
+        System.out.println("\nВы уверены что хотите очистить XML файл?");
+        System.out.println("Введите Да/Нет.");
+        danet = vvod.nextLine();
+        while (flagclear){
+            danet = vvod.nextLine();
+            if (danet.toLowerCase().equals("да")){
+                try { //Данный try catch делает пустым XML файл.
+                    JAXBContext context = newInstance(General.class, ForXML.class, pesok.class, cement.class, brick.class, glass.class);
+                    Marshaller marshaller = context.createMarshaller();
+                    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                    marshaller.marshal(clearXml, new File(filename));
+                    System.out.println("Xml файл успешно очищен.");
+                    flagclear = false;
+                } catch (JAXBException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if(danet.toLowerCase().equals("нет")){
+                flagclear = false;
+            }
+            if (flagclear) {
+              System.out.println("Вы ввели неверно. Введите Да/Нет.");
+           }
         }
     }
 
@@ -199,7 +229,7 @@ public class Operations {
                     while (flagvvod) {//Проверка промежутка ввода данных
                         try {
                             streight = inputNumInt();
-                            if (75 <= radioactive && radioactive <= 300) {
+                            if (75 <= streight && streight <= 300) {
                                 flagvvod = false;
                             } else
                                 throw new IllegalArgumentException("Введёна неправильная Марка прочности. ");
@@ -294,18 +324,36 @@ public class Operations {
                                         Pesokobj.setWeight(inputNumDouble());
                                     }
                                     case 2 -> {
-                                        System.out.println("Введите новую Степень Радиокативности.");
-                                        Pesokobj.setRadioactive(inputNumInt());
+                                        System.out.println("Введите новую степень радиоактивности (от 1 до 5)");
+                                        boolean flagchange = true;
+                                        while (flagchange){//Проверка промежутка ввода данных
+                                            try {
+                                                radioactive = inputNumInt();
+                                                if ( 1 <= radioactive && radioactive <= 5) {
+                                                    flagchange = false;
+                                                }
+                                                else
+                                                    throw new IllegalArgumentException("Введёна неправильная степень радиоактивности. ");
+
+                                            }
+                                            catch (IllegalArgumentException e){
+                                                System.out.println("Введёна неправильная степень радиоактивности.");
+                                                System.out.println("Введите степень радиоактивности (от 1 до 5)");
+                                            }
+                                        }
+                                        Pesokobj.setRadioactive(radioactive);
                                     }
                                     case 3 -> iscorrectp = false;
                                     default -> System.out.println("Введен неверный параметр.");
                                 }
-                                Pesok.set(Index, Pesokobj);
                             }
+                            Pesok.set(Index, Pesokobj);
+                            System.out.println("Параметры объекта успешно изменены.");
+                            System.out.println(Pesokobj + "\n");
                         }
                         else System.out.println("Элемента с данным индексом не существует."); break;
                     }
-                    else System.out.println("Объектов песок в базе нет."); break;
+                    else System.out.println("Объектов 'Песок' в базе нет."); break;
                 case 2:
                     if (!Cement.isEmpty()) {
                         wiwodcement();
@@ -340,12 +388,14 @@ public class Operations {
                                         System.out.println("Введен неверный параметр.");
                                         break;
                                 }
-                                Cement.set(Index, Cemebtobj);
                             }
+                            Cement.set(Index, Cemebtobj);
+                            System.out.println("Параметры объекта успешно изменены.");
+                            System.out.println(Cemebtobj + "\n");
                         }
                         else System.out.println("Элемента с данным индексом не существует."); break;
                     }
-                    else System.out.println("Объектов цемент в базе нет."); break;
+                    else System.out.println("Объектов 'Цемент' в базе нет."); break;
                 case 3:
                     if (!Brick.isEmpty()) {
                         wiwodbrick();
@@ -369,8 +419,24 @@ public class Operations {
                                         Bricktobj.setWeight(inputNumDouble());
                                         break;
                                     case 2:
-                                        System.out.println("Введите новую прочность.");
-                                        Bricktobj.setStreight(inputNumInt());
+                                        System.out.println("Введите новую Марку прочности (от 75М до 300М)");
+                                        boolean flagchange = true;
+                                        while (flagchange){//Проверка промежутка ввода данных
+                                            try {
+                                                streight = inputNumInt();
+                                                if ( 75 <= streight && streight <= 300) {
+                                                    flagchange = false;
+                                                }
+                                                else
+                                                    throw new IllegalArgumentException("Введёна неправильная Марка прочности. ");
+
+                                            }
+                                            catch (IllegalArgumentException e){
+                                                System.out.println("Введёна неправильная Марка прочности.");
+                                                System.out.println("Введите Марку прочности (от 75М до 300М)");
+                                            }
+                                        }
+                                        Bricktobj.setStreight(streight);
                                         break;
                                     case 3:
                                         System.out.println("Введите новое количество.");
@@ -380,12 +446,14 @@ public class Operations {
                                         System.out.println("Введен неверный параметр.");
                                         break;
                                 }
-                                Brick.set(Index, Bricktobj);
                             }
+                            Brick.set(Index, Bricktobj);
+                            System.out.println("Параметры объекта успешно изменены.");
+                            System.out.println(Bricktobj + "\n");
                         }
                         else System.out.println("Элемента с данным индексом не существует."); break;
                     }
-                    else System.out.println("Объектов кирпич в базе нет."); break;
+                    else System.out.println("Объектов 'Кирпич' в базе нет."); break;
                 case 4:
                     if (!Glass.isEmpty()) {
                         wiwodglass();
@@ -420,19 +488,20 @@ public class Operations {
                                         System.out.println("Введен неверный параметр.");
                                         break;
                                 }
-                                Glass.set(Index, Glassobj);
                             }
+                            Glass.set(Index, Glassobj);
+                            System.out.println("Параметры объекта успешно изменены.");
+                            System.out.println(Glassobj + "\n");
                         }
                         else System.out.println("Элемента с данным индексом не существует."); break;
                     }
-                    else System.out.println("Объектов стекло в базе нет."); break;
+                    else System.out.println("Объектов 'Стекло' в базе нет."); break;
                 case 5: flag2 = false; break;
                 default:
                     System.out.println("Введенно неверное значение.");
                     break;
             }
         }
-
     }
     public static void Delete(){ //Функция удаления объектов.
         boolean FlagDelete = true, Udalil = false;
@@ -481,42 +550,50 @@ public class Operations {
         WiwodAll();
     }
     public static void wiwodpesok(){//Функция для вывода объектов "Песок".
-        System.out.println("Все объекты 'Песок'.");
         if (!Pesok.isEmpty()) {
+            System.out.println("Все объекты 'Песок'.");
             for (pesok pesok : Pesok) {
                 System.out.println(pesok + "");
             }
+            System.out.println();
         }
+        else System.out.println("--Объектов 'Песок' в базе нет.--\n");
     }
     public static void wiwodcement(){//Функция для вывода объектов "Цемент".
-        System.out.println("Все объекты 'Цемент'.");
         if (!Cement.isEmpty()) {
+            System.out.println("Все объекты 'Цемент'.");
             for (cement cement : Cement) {
                 System.out.println(cement + "");
             }
+            System.out.println();
         }
+        else System.out.println("--Объектов 'Цемент' в базе нет.--\n");
     }
     public static void wiwodbrick(){//Функция для вывода объектов "Кирпич".
-        System.out.println("Все объекты 'Кирпич'.");
         if (!Brick.isEmpty()) {
+            System.out.println("Все объекты 'Кирпич'.");
             for (brick brick : Brick) {
                 System.out.println(brick + "");
             }
+            System.out.println();
         }
+        else System.out.println("--Объектов 'Кирпич' в базе нет.--\n");
     }
     public static void wiwodglass(){//Функция для вывода объектов "Стекло".
-        System.out.println("Все объекты 'Стекло'.");
         if (!Glass.isEmpty()) {
+            System.out.println("Все объекты 'Стекло'.");
             for (glass glass : Glass) {
                 System.out.println(glass + "");
             }
+            System.out.println();
         }
+        else System.out.println("--Объектов 'Стекло' в базе нет.--\n");
 
     }
     public static void WiwodAll(){
         if((Pesok.isEmpty()) & (Cement.isEmpty()) & (Brick.isEmpty()) & (Glass.isEmpty())) System.out.println("\nБаза пустая");
         else {
-            System.out.println("\nВ базе имеются:");
+            System.out.println("\nВ базе имеются:\n");
             wiwodpesok();
             wiwodcement();
             wiwodbrick();
