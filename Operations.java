@@ -20,7 +20,7 @@ public class Operations {
     static int radioactive, drying_time, value, streight, IdDelete, IDChange;
     static boolean flag1 = true, flag2 = true;
     static Scanner vvod = new Scanner(System.in); //Сканер для ввода с клавиатуры.
-    static String filename = "myxml.xml"; //Название файла для XML.
+    final static String filename = "myxml.xml"; //Название файла для XML.
 
     public static void showMenu(){ //Основное меню программы.
         boolean flag = true;

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<forXML>
+    <material xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="pesok">
+        <id>1097</id>
+        <name>Песок</name>
+        <radioactive>4</radioactive>
+        <value>0</value>
+        <weight>423.0</weight>
+    </material>
+    <material xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="cement">
+        <density>1500.0</density>
+        <drying_time>72</drying_time>
+        <id>3020</id>
+        <name>Цемент</name>
+        <value>0</value>
+        <weight>432.0</weight>
+    </material>
+    <material xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="brick">
+        <id>5042</id>
+        <name>Кирпич</name>
+        <streight>100</streight>
+        <value>63</value>
+        <weight>534.0</weight>
+    </material>
+    <material xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="glass">
+        <fragility>700.0</fragility>
+        <id>8066</id>
+        <name>Стекло</name>
+        <value>534</value>
+        <weight>6345.0</weight>
+    </material>
+</forXML>

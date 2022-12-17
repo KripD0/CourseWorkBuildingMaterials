@@ -3,6 +3,7 @@ package org.example;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+
 @XmlSeeAlso({pesok.class, cement.class, brick.class, glass.class})
 public abstract class General {
     private String name; //Название
